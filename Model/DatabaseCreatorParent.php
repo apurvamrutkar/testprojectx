@@ -7,7 +7,7 @@ include_once 'AutoIncrement.php';
  */
 
 $m = new MongoClient();
-$db = $m->testdb;
+$db = $m->projectx;
 $person = $db->person;
 $a = new Mongodb_Autoincrement($person, $db, "counters");
         
@@ -30,25 +30,31 @@ for($i=1;$i<=$total_parents;$i++){
 	$fathername=fgets($fatherfile);
 	$mothername = fgets($motherfile);
 	$fnamedesc=explode(" ",$fathername);
+        $flast = explode("\r", $fnamedesc[1]);
+        $flast_name = $flast[0];
+        echo $flast_name;
 	$mnamedesc=explode(" ",$mothername);
+        $mlast = explode("\r", $mnamedesc[1]);
+        $mlast_name = $mlast[0];
+        echo $mlast_name;
 	$p=array(
-		"_id"=> (string)$n,
+		"_id"=> $n,
 		"type"=> "parent",
 		"father_name"=>array(
 			"first_name"=> $fnamedesc[0],
-			"last_name"=> $fnamedesc[1]
+			"last_name"=> $flast_name
 		),
 		"mother_name"=>array(
 			"first_name"=> $mnamedesc[0],
-			"last_name"=> $mnamedesc[1]
+			"last_name"=> $mlast_name
 		),
 		//"students"=> 
 		"address"=> "Mumbai",
 		"email_id"=> $fnamedesc[0]."@gmail.com",
 		"username"=> $fnamedesc[0].$n,
 		"password"=> $fnamedesc[0].$n,
-		"contact_no"=> (string)mt_rand(20000000,99999999),
-		"dob"=> mt_rand(1,31)."/".mt_rand(1,12)."/".mt_rand(1960,1980),
+		"contact_no"=> mt_rand(20000000,99999999),
+		
 	);
 	$person->insert($p);
 

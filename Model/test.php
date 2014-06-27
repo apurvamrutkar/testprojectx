@@ -1,6 +1,6 @@
 <?php
 include './encryption.php';
-ini_set('max_execution_time', 300);
+ini_set('max_execution_time', 600);
 /* 
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -28,7 +28,7 @@ $change_roll_no_0to30 = $db->person->update(
  * 
  */
 
-/*
+
 //modify password with secured hash
 $find_pass = $db->person->find(array(),array("_id"=>0, "password"=>1));
 $pass = array();
@@ -48,10 +48,11 @@ foreach ($encryptedpass as $index=>$password){
         array('$set'=>array("password"=>  $password))
         );
 }
- * 
- */
-
+ 
+/*
 $delete_parent_dob = $db->person->update(
         array("type"=>"parent"),
         array('$unset'=>array("dob"=>"")),
         array("multiple"=>true));
+ * 
+ */

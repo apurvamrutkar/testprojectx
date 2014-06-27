@@ -7,7 +7,7 @@ include_once 'AutoIncrement.php';
  */
 
 $m = new MongoClient();
-$db = $m->testdb;
+$db = $m->projectx;
 $person = $db->person;
 $a = new Mongodb_Autoincrement($person, $db, "counters");
         
@@ -23,18 +23,21 @@ for($i=1;$i<=$total_teachers;$i++){
 	$n = $a->getNext();
 	$name=fgets($myfile);
 	$namedesc=explode(" ",$name);
+        $last = explode("\r", $namedesc[1]);
+        $last_name = $last[0];
+        echo $last_name;
 	$p=array(
-		"_id"=> (string)$n,
+		"_id"=> $n,
 		"type"=> "teacher",
 		"name"=>array(
 			"first_name"=> $namedesc[0],
-			"last_name"=> $namedesc[1]
+			"last_name"=> $last_name
 		),
 		"address"=> "Mumbai",
 		"email_id"=> $namedesc[0]."@gmail.com",
 		"username"=> $namedesc[0].$n,
 		"password"=> $namedesc[0].$n,
-		"contact_no"=> (string)mt_rand(20000000,99999999),
+		"contact_no"=> mt_rand(20000000,99999999),
 		"dob"=> mt_rand(1,31)."/".mt_rand(1,12)."/".mt_rand(1970,1990),
 	);
 	$person->insert($p);

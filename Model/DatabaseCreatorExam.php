@@ -7,14 +7,14 @@ include_once 'AutoIncrement.php';
  */
 
 $m = new MongoClient();
-$db = $m->testdb;
+$db = $m->projectx;
 $exam = $db->ac_2013_2014;
 
 $a = new Mongodb_Autoincrement($exam, $db, "examcounter");
 
 $n = $a->getNext();
 $t = array(
-	"_id"=>(string)$n
+	"_id"=>$n
 	);
 $exam->insert($t);
 
@@ -28,7 +28,7 @@ foreach($students as $stu){
         echo $stuid;
 	$p=array("student_id"=>$stuid);
 	$exam->update(
-			array("_id"=>(string)$n),
+			array("_id"=>$n),
 			array('$push'=>array("student"=>$p))
 			);
         
@@ -46,11 +46,11 @@ foreach($students as $stu){
         $doc = $sublength->getNext()["subject"];
         
         $no_of_subjects= sizeof($doc,1);
-        //var_dump($doc);
+        
         
         $min=6*(intval($std)-1);
         $max=6*intval($std);
-        //echo $no_of_subjects;
+        
         for($i=$min;$i<$max;$i++){
 	
                 
@@ -60,17 +60,17 @@ foreach($students as $stu){
 		$s = array(
 		"subject_id"=>$subjectid,
 		"subject_name"=> $subname,
-		"marks_obtained"=> (string)mt_rand(0,100),
-		"max_marks"=> (string)100
+		"marks_obtained"=> mt_rand(0,100),
+		"max_marks"=> 100
 		);
                 
                 echo $s["subject_id"].'<br />';
                 echo $s["subject_name"].'<br />';
                 echo $s["marks_obtained"].'<br />';
                 echo $s["max_marks"].'<br />'.'<br />';
-                $student_id = intval($stuid)-1;
+                $student_id = $stuid-1;
 		$exam->update(
-			array("_id"=>(string)$n),
+			array("_id"=>$n),
 			array('$push'=>array("student.$student_id.subject"=>$s))
 			);
                 

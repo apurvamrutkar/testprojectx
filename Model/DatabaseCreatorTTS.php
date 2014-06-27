@@ -7,7 +7,7 @@ include_once 'AutoIncrement.php';
  */
 
 $m = new MongoClient();
-$db = $m->testdb;
+$db = $m->projectx;
 $tts = $db->ac_2013_2014;
 
 $a = new Mongodb_Autoincrement($tts, $db, "subjectcounter");
@@ -32,10 +32,10 @@ for($std=1;$std<=10;$std++){
 	for($i=0;$i<count($sub_name);$i++){
 		$n = $a->getNext();
 		$p = array(
-			"subject_id"=> (string)$n,
+			"subject_id"=> $n,
 			"subject_name"=> $sub_name[$i],
-			"teacher_id"=> (string)mt_rand(1501,1600),
-			"standard"=> (string)$std,
+			"teacher_id"=> mt_rand(1501,1600),
+			"standard"=> $std,
 			"chapter"=>""
 			);
                     echo $p["subject_id"].'<br />';

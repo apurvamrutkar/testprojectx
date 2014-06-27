@@ -81,7 +81,7 @@ $p=array(
                 "roll_no"=> $rno["roll_no"]+1,
 		"parent_id"=> mt_rand(900, 1500)
 	);
-	$person->insert($p);
+	//$person->insert($p);
 
 
 //Modify Student
@@ -90,15 +90,15 @@ $standard = 1;//$_POST["standard"];
 $div = "A";//$_POST["division"];
 $name = $db->person->find(
         /*array('$match'=>*/array("standard"=>$standard,"division"=>$div),//),
-        /*array('$project'=>*/array("_id"=>0,"name.first_name"=>1)//)
+        /*array('$project'=>*/array("_id"=>0,"name"=>1)//)
         );
 
-$fnames = array();
+$names = array();
 $i=0;
 foreach ($name as $doc){
-    $fnames[$i++]=$doc["name"]["first_name"];
+    $names[$i++]=$doc["name"]["first_name"]." ".$doc["name"]["last_name"];
 }
-echo json_encode($fnames);
+echo json_encode($names);
 echo '<br />'.'<br />'.'<br />'.'<br />';
 //getting roll_no
 $standard = 1;//$_POST["standard"];
@@ -131,3 +131,31 @@ $stu = $db->person->findOne(
         array("_id"=>0,"name"=>1,"roll_no"=>1,"address"=>1,"dob"=>1,"roll_no"=>1,"contact_no"=>1) 
         );
 echo json_encode($stu);
+echo '<br />'.'<br />'.'<br />'.'<br />';
+
+
+//Delete a Student
+$rollno = 32;
+$find_stu_to_delete = $db->person->findAndModify(
+        array( "standard"=>$standard,"division"=>$div,"roll_no"=>$rollno),
+        array("remove"=>true)
+        );
+
+$parent_id = $find_stu_to_delete["parent_id"];
+$delete_stu_doc = $db->person->remove(array("_id"=>$find_stu_to_delete["_id"]));
+echo json_encode($find_stu_to_delete);
+echo '<br />';
+$check_parent = $db->person->find(
+        array("parent_id"=>$parent_id));
+echo $check_parent->count();
+echo '<br />';
+if($check_parent->count()==0){
+    $delete_parent = $db->person->remove(array("_id"=>$parent_id));
+    echo "parent removed";
+}
+
+
+
+
+
+//Extracting from Excel files

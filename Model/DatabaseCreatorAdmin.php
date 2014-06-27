@@ -7,7 +7,7 @@ include_once 'AutoIncrement.php';
  */
 
 $m = new MongoClient();
-$db = $m->testdb;
+$db = $m->projectx;
 $person = $db->person;
 $a = new Mongodb_Autoincrement($person, $db, "counters");
         
@@ -22,7 +22,7 @@ $person = $db->person;
 $n = $a->getNext();
 
 $p=array(
-        "_id"=> (string)$n,
+        "_id"=> $n,
         "type"=> "admin",
         "name"=>array(
                 "first_name"=> "Suraj",
@@ -32,7 +32,7 @@ $p=array(
         "email_id"=> "suraj@gmail.com",
         "username"=> "suraj69",
         "password"=> "suraj69",
-        "contact_no"=> (string)mt_rand(20000000,99999999),
+        "contact_no"=> mt_rand(20000000,99999999),
         "dob"=> mt_rand(1,31)."/".mt_rand(1,12)."/".mt_rand(1970,1990),
 );
 $person->insert($p);
